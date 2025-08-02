@@ -30,8 +30,19 @@ export default function Home() {
   };
 
   useEffect(() => {
-    window.addEventListener("paste", handlePaste);
-    return () => window.removeEventListener("paste", handlePaste);
+    const current = pasteZoneRef.current;
+    if (current) {
+      current.addEventListener("paste", handlePaste);
+    } else {
+      window.addEventListener("paste", handlePaste);
+    }
+    return () => {
+      if (current) {
+        current.removeEventListener("paste", handlePaste);
+      } else {
+        window.removeEventListener("paste", handlePaste);
+      }
+    };
   }, []);
 
   const handleAnalyze = async () => {
@@ -91,7 +102,11 @@ export default function Home() {
           textAlign: "center",
           background: "#f0f8ff",
           fontWeight: "bold",
-          color: "#0070f3"
+          color: "#0070f3",
+          minHeight: "150px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
         }}
       >
         📋 Zalijepi sliku ovdje (Ctrl+V ili Command+V)

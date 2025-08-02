@@ -6,13 +6,43 @@ export default async function handler(req, res) {
   const { image } = req.body;
 
   if (!image) {
-    return res.status(400).json({ error: "Image is required" });
+    return res.status(400).json({ result: "⚠️ Slika nije poslata." });
   }
 
-  // TODO: Ovdje će ići povezivanje sa OpenAI GPT-4o kad se API integracija doda
+  try {
+    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "Analiziraj ovaj forex grafikon. Napiši pregled tržišne strukture, trenda i ključnih zona. Koristi stručni ton."
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: image
+                }
+              }
+            ]
+          }
+        ]
+      })
+    });
 
-  // Za sada vraćamo testni odgovor
-  return res.status(200).json({
-    result: "✅ Slika je uspješno primljena! AI analiza uskoro dolazi...",
-  });
+    const data = await openaiRes.json();
+    const reply = data.choices?.[0]?.message?.content || "⚠️ Nema AI odgovora.";
+    res.status(200).json({ result: reply });
+  } catch (err) {
+    console.error("Greška u AI analizi:", err);
+    res.status(500).json({ result: "❌ Greška u obradi zahtjeva." });
+  }
 }

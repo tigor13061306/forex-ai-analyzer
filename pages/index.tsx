@@ -100,7 +100,7 @@ export default function Home() {
           borderRadius: "8px",
           padding: "2rem",
           textAlign: "center",
-          background: "#f0f8ff",
+          background: "#e6f0ff",
           fontWeight: "bold",
           color: "#0070f3",
           minHeight: "150px",
@@ -109,7 +109,7 @@ export default function Home() {
           alignItems: "center"
         }}
       >
-        📋 Zalijepi sliku ovdje (Ctrl+V ili Command+V)
+        📋 Ovde postavite svoj grafikon (Ctrl+V ili Command+V)
       </div>
 
       {preview && (

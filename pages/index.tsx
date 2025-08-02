@@ -22,7 +22,6 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: base64 }),
       });
-
       const data = await res.json();
       setResult(data.result || "⚠️ Greška: Prazan rezultat");
     };

@@ -1,4 +1,6 @@
-export default async function handler(req, res) {
+import type { NextApiRequest, NextApiResponse } from "next";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -7,6 +9,11 @@ export default async function handler(req, res) {
 
   if (!image) {
     return res.status(400).json({ result: "⚠️ Slika nije poslata." });
+  }
+
+  if (!process.env.OPENAI_API_KEY) {
+    console.error("❌ OPENAI_API_KEY nije definisan u environmentu");
+    return res.status(500).json({ result: "❌ API ključ nije konfigurisan." });
   }
 
   try {
@@ -39,6 +46,12 @@ export default async function handler(req, res) {
     });
 
     const data = await openaiRes.json();
+
+    if (!openaiRes.ok) {
+      console.error("Greška iz OpenAI API-ja:", data);
+      return res.status(500).json({ result: "❌ AI odgovor nije uspješan." });
+    }
+
     const reply = data.choices?.[0]?.message?.content || "⚠️ Nema AI odgovora.";
     res.status(200).json({ result: reply });
   } catch (err) {

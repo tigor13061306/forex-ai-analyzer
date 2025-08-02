@@ -1,49 +1,48 @@
-import { useState } from "react";
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
-export default function Home() {
-  const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [result, setResult] = useState<string>("");
+  const { image } = req.body;
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setImage(file);
-    setPreview(URL.createObjectURL(file));
-  };
+  if (!image) {
+    return res.status(400).json({ result: "⚠️ Slika nije poslata." });
+  }
 
-  const handleAnalyze = async () => {
-    if (!image) return;
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64 = reader.result;
-      const res = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: base64 }),
-      });
-      const data = await res.json();
-      setResult(data.result);
-    };
-    reader.readAsDataURL(image);
-  };
+  try {
+    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `📘 AI MSS ANALIZA – STRATEŠKI PROMT ZA SVAKODNEVNE FOREX ANALIZE ...` // skraceno za preglednost
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: image
+                }
+              }
+            ]
+          }
+        ]
+      })
+    });
 
-  return (
-    <div style={{ padding: 30 }}>
-      <h1>📸 Forex AI Analyzer</h1>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
-      {preview && (
-        <img
-          src={preview}
-          alt="Preview"
-          style={{ width: 300, marginTop: 10 }}
-        />
-      )}
-      <br />
-      <button onClick={handleAnalyze} style={{ marginTop: 20 }}>
-        🔍 Analiziraj
-      </button>
-      <pre style={{ whiteSpace: "pre-wrap", marginTop: 20 }}>{result}</pre>
-    </div>
-  );
+    const data = await openaiRes.json();
+    const reply = data.choices?.[0]?.message?.content || "⚠️ Nema AI odgovora.";
+    res.status(200).json({ result: reply });
+  } catch (err) {
+    console.error("Greška u AI analizi:", err);
+    res.status(500).json({ result: "❌ Greška u obradi zahtjeva." });
+  }
 }

@@ -46,19 +46,9 @@ export default async function handler(req, res) {
   🔹 ako cijena padne ispod EQ → bias = SELL → tražimo SELL zone ispod EQ
 – Ako cijena prilazi EQ odozdo:
   🔹 tražimo validne 1H SELL zone ispod i oko EQ
-  🔹 ako cijena probije EQ naviše → bias = BUY → tražimo BUY zone iznad EQ`
-              },
-              {
-                type: "image_url",
-                image_url: {
-                  url: image
-                }
-              }
-            ]
-          },
-          {
-            role: "user",
-            content: `📊 1H STRUKTURA I ZONE
+  🔹 ako cijena probije EQ naviše → bias = BUY → tražimo BUY zone iznad EQ
+
+📊 1H STRUKTURA I ZONE
 🔁 MSS (Market Structure Shift – 1H)
 – Bearish MSS: HL → HH → zatvaranje ispod HL → LH → LL
 – Bullish MSS: LH → LL → zatvaranje iznad LH → HL → HH
@@ -198,7 +188,17 @@ Prvo Postavi pitanje na kojem jeziku želite uputstvo. Tek kad korisnik napiše 
 
 ✅ Ograničenje pristupa:
 ⛔️ Analizu može zatražiti samo vlasnik ovog Custom GPT-a.
-Svi pokušaji drugih korisnika biće ignorisani kako bi se očuvala sigurnost, dosljednost i tačnost sadržaja.`
+Svi pokušaji drugih korisnika biće ignorisani kako bi se očuvala sigurnost, dosljednost i tačnost sadržaja.
+
+📌 Na osnovu slike grafikona, generiši jasnu i sveobuhvatnu AI Forex analizu u skladu sa pravilima iznad. Koristi stručni ton, jasan format i odgovori u formi dnevnog izvještaja. Ne preskači nijedan korak i poštuj strukturu bez odstupanja.`
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: image
+                }
+              }
+            ]
           }
         ]
       })

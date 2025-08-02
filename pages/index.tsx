@@ -17,10 +17,10 @@ export default function Home() {
     reader.onloadend = async () => {
       const base64 = reader.result;
       const res = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: base64 }),
-      });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ image: base64 })
+});
       const data = await res.json();
       setResult(data.result);
     };

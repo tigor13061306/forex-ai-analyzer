@@ -5,7 +5,8 @@ export default function Home() {
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState("");
 
-  const handleImageUpload = (e) => {
+ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+
     const file = e.target.files[0];
     setImage(file);
     setPreview(URL.createObjectURL(file));

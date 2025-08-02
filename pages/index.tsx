@@ -92,25 +92,26 @@ export default function Home() {
         style={{ display: "none" }}
       />
 
-      <div
-        ref={pasteZoneRef}
-        style={{
-          marginTop: "1rem",
-          border: "2px dashed #0070f3",
-          borderRadius: "8px",
-          padding: "2rem",
-          textAlign: "center",
-          background: "#e6f0ff",
-          fontWeight: "bold",
-          color: "#0070f3",
-          minHeight: "150px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
-        📋 Ovde postavite svoj grafikon (Ctrl+V ili Command+V)
-      </div>
+    <div
+  ref={pasteZoneRef}
+  style={{
+    marginTop: "2rem",
+    border: "3px dashed #0070f3",
+    borderRadius: "10px",
+    padding: "2.5rem",
+    background: "#f0f8ff",
+    minHeight: "180px",
+    color: "#003366",
+    fontWeight: 600,
+    fontSize: "1.2rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    boxShadow: "0 0 10px rgba(0, 112, 243, 0.2)"
+  }}
+>
+  📋 <span style={{ marginLeft: "0.5rem" }}>Ovde zalijepite grafikon (Ctrl+V)</span>
+</div>
 
       {preview && (
         <div>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function Home() {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState("");
+  const pasteZoneRef = useRef<HTMLDivElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -36,10 +37,6 @@ export default function Home() {
   const handleAnalyze = async () => {
     if (!image) return;
 
-    const formData = new FormData();
-    formData.append("file", image);
-
-    // Pretvori sliku u base64 (potrebno za OpenAI image_url)
     const reader = new FileReader();
     reader.onloadend = async () => {
       const base64 = reader.result?.toString();
@@ -63,11 +60,27 @@ export default function Home() {
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
       <h1>📸 Forex AI Analyzer</h1>
       <input type="file" accept="image/*" onChange={handleImageUpload} />
-      <p>📋 Zalijepi sliku (Ctrl+V) direktno ovdje</p>
+
+      <div
+        ref={pasteZoneRef}
+        style={{
+          marginTop: "1rem",
+          border: "2px dashed #aaa",
+          padding: "2rem",
+          textAlign: "center",
+          background: "#f3f3f3"
+        }}
+      >
+        📋 Zalijepi sliku ovdje (Ctrl+V)
+      </div>
 
       {preview && (
         <div>
-          <img src={preview} alt="Preview" style={{ maxWidth: "100%", marginTop: "1rem" }} />
+          <img
+            src={preview}
+            alt="Preview"
+            style={{ maxWidth: "100%", marginTop: "1rem" }}
+          />
         </div>
       )}
 
@@ -76,7 +89,14 @@ export default function Home() {
       </button>
 
       {result && (
-        <pre style={{ whiteSpace: "pre-wrap", marginTop: "2rem", background: "#f9f9f9", padding: "1rem" }}>
+        <pre
+          style={{
+            whiteSpace: "pre-wrap",
+            marginTop: "2rem",
+            background: "#f9f9f9",
+            padding: "1rem"
+          }}
+        >
           {result}
         </pre>
       )}

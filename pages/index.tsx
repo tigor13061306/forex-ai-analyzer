@@ -59,19 +59,42 @@ export default function Home() {
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
       <h1>📸 Forex AI Analyzer</h1>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
+
+      <label
+        htmlFor="imageUpload"
+        style={{
+          display: "inline-block",
+          padding: "0.5rem 1rem",
+          background: "#0070f3",
+          color: "#fff",
+          borderRadius: "5px",
+          cursor: "pointer"
+        }}
+      >
+        📁 Odaberi sliku
+      </label>
+      <input
+        id="imageUpload"
+        type="file"
+        accept="image/*"
+        onChange={handleImageUpload}
+        style={{ display: "none" }}
+      />
 
       <div
         ref={pasteZoneRef}
         style={{
           marginTop: "1rem",
-          border: "2px dashed #aaa",
+          border: "2px dashed #0070f3",
+          borderRadius: "8px",
           padding: "2rem",
           textAlign: "center",
-          background: "#f3f3f3"
+          background: "#f0f8ff",
+          fontWeight: "bold",
+          color: "#0070f3"
         }}
       >
-        📋 Zalijepi sliku ovdje (Ctrl+V)
+        📋 Zalijepi sliku ovdje (Ctrl+V ili Command+V)
       </div>
 
       {preview && (
@@ -84,7 +107,18 @@ export default function Home() {
         </div>
       )}
 
-      <button onClick={handleAnalyze} style={{ marginTop: "1rem" }}>
+      <button
+        onClick={handleAnalyze}
+        style={{
+          marginTop: "1rem",
+          padding: "0.5rem 1rem",
+          background: "#28a745",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer"
+        }}
+      >
         🔍 Analiziraj
       </button>
 
@@ -94,7 +128,9 @@ export default function Home() {
             whiteSpace: "pre-wrap",
             marginTop: "2rem",
             background: "#f9f9f9",
-            padding: "1rem"
+            padding: "1rem",
+            borderRadius: "4px",
+            border: "1px solid #ccc"
           }}
         >
           {result}

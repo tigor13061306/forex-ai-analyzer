@@ -23,7 +23,7 @@ export default function Home() {
         body: JSON.stringify({ image: base64 }),
       });
       const data = await res.json();
-      setResult(data.result || "⚠️ Greška: Prazan rezultat");
+      setResult(data.result || "⚠️ Greška: nema odgovora");
     };
     reader.readAsDataURL(image);
   };
